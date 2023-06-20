@@ -1,11 +1,15 @@
+"use client";
 import TodoList from "./TodoList";
+import { useAppSelector } from "@/hooks";
+import { ITodoList } from "@/services/type/todoList.interface";
 
 export default function TodoLists() {
+  const allTodolists = useAppSelector((state) => state.todoListSlice.todoLists);
   return (
-    <div className="grid grid-cols-4 gap-4 max-2xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 px-4">
-      <TodoList />
-      <TodoList />
-      <TodoList />
+    <div className="grid grid-cols-4 gap-4 max-2xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1">
+      {allTodolists.map((item: ITodoList) => (
+        <TodoList key={item.id} name={item.name} />
+      ))}
     </div>
   );
 }
