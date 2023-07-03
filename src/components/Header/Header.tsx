@@ -1,32 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import { ChangeEvent, KeyboardEvent, useRef } from "react";
+import { ChangeEvent, KeyboardEvent, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { useAppDispatch, useAppSelector } from "@/hooks";
-import {
-  addTodoList,
-  addTodoListName,
-} from "@/services/redux/features/todoListSlice";
+import { useAppDispatch } from "@/hooks/hooks";
+import { addTodoList } from "@/services/redux/features/todoListSlice";
 
 export default function Header() {
+  const [inputValue, setInputValue] = useState("");
+
   const dispatch = useAppDispatch();
-  const todoListName = useAppSelector(
-    (state) => state.todoListSlice.todoListName
-  );
-  const todoList = useAppSelector((state) => state.todoListSlice.todoLists);
-  console.log(todoList);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(addTodoListName(e.target.value));
+  const inputValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
   };
 
   const buttonPressHandler = () => {
-    dispatch(addTodoList({ id: uuidv4(), name: todoListName }));
-    dispatch(addTodoListName(""));
+    dispatch(addTodoList({ id: uuidv4(), name: inputValue }));
+    setInputValue("");
   };
 
   const enterPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -53,8 +47,8 @@ export default function Header() {
             type="text"
             className="w-60 border border-gray-300 rounded px-2 py-1 text-black"
             placeholder="Todo list title"
-            value={todoListName}
-            onChange={inputHandler}
+            value={inputValue}
+            onChange={inputValueHandler}
             onKeyPress={enterPressHandler}
           />
           <button

@@ -6,10 +6,10 @@ export interface ITask {
 export interface ITodoList {
   id: string;
   name: string;
+  tasks: ITask[];
 }
 
 export interface ITodoListState {
   todoListName: string;
   todoLists: ITodoList[];
-  tasks: ITask[];
 }
