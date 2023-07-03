@@ -1,23 +1,32 @@
-import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { addTask } from "@/services/redux/features/todoListSlice";
-import { ITodoList } from "@/services/type/todoList.interface";
 import { useState, ChangeEvent } from "react";
-import { BsFillPlusSquareFill } from "react-icons/bs";
+import { BsFillPlusSquareFill, BsTrash3Fill } from "react-icons/bs";
 import { v4 as uuidv4 } from "uuid";
 
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { addTask, setTodoLists } from "@/services/redux/features/todoListSlice";
+import { ITodoList } from "@/services/type/todoList.interface";
+
 export default function TodoList(props: ITodoList) {
-  const [value, setValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const allTodolists = useAppSelector((state) => state.todoListSlice.todoLists);
+
   const dispatch = useAppDispatch();
 
   const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+    setInputValue(e.target.value);
   };
 
   const buttonPressHandler = () => {
-    dispatch(addTask({ id: props.id, task: { id: uuidv4(), title: value } }));
+    dispatch(
+      addTask({ id: props.id, task: { id: uuidv4(), title: inputValue } })
+    );
   };
 
-  const tasks = props.tasks.map((task) => <p>{task.title}</p>);
+  const deleteTodoList = (todoId: string) => {
+    dispatch(
+      setTodoLists(allTodolists.filter((item: ITodoList) => item.id !== todoId))
+    );
+  };
 
   return (
     <div className="p-4 border border-greay-50 rounded-md">
@@ -28,7 +37,7 @@ export default function TodoList(props: ITodoList) {
           className="flex-grow mr-2 border border-gray-300 rounded px-2 py-1"
           placeholder="Enter a task"
           onChange={inputHandler}
-          value={value}
+          value={inputValue}
         />
         <button
           onClick={buttonPressHandler}
@@ -37,7 +46,11 @@ export default function TodoList(props: ITodoList) {
           <BsFillPlusSquareFill />
         </button>
       </div>
-      <div>{tasks}</div>
+      <div>
+        {props.tasks.map((task) => (
+          <p>{task.title}</p>
+        ))}
+      </div>
       <div className="mb-4">
         <input type="radio" id="filter-all" name="filter" value="All" />
         <label htmlFor="filter-all" className="ml-2 mr-4">
@@ -56,6 +69,14 @@ export default function TodoList(props: ITodoList) {
         <label htmlFor="filter-inprocess" className="ml-2">
           Completed
         </label>
+      </div>
+      <div className="flex justify-center">
+        <button
+          className="text-red-500 hover:text-red-400 text-3xl"
+          onClick={() => deleteTodoList(props.id)}
+        >
+          <BsTrash3Fill />
+        </button>
       </div>
     </div>
   );

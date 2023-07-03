@@ -1,8 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ITask, ITodoListState } from "@/services/type/todoList.interface";
+import {
+  ITask,
+  ITodoListState,
+  ITodoList,
+} from "@/services/type/todoList.interface";
 
 const initialState: ITodoListState = {
-  todoListName: "",
   todoLists: [],
 };
 
@@ -10,9 +13,6 @@ export const todoList = createSlice({
   name: "totoList",
   initialState,
   reducers: {
-    addTodoListName: (state, action: PayloadAction<string>) => {
-      state.todoListName = action.payload;
-    },
     addTodoList: (
       state,
       action: PayloadAction<{ id: string; name: string }>
@@ -23,6 +23,9 @@ export const todoList = createSlice({
         tasks: [],
       });
     },
+    setTodoLists(state, action: PayloadAction<ITodoList[]>) {
+      state.todoLists = action.payload;
+    },
     addTask(state, action: PayloadAction<{ id: string; task: ITask }>) {
       const todo = state.todoLists.filter(
         (todo) => todo.id === action.payload.id
@@ -32,5 +35,5 @@ export const todoList = createSlice({
   },
 });
 
-export const { addTodoList, addTodoListName, addTask } = todoList.actions;
+export const { addTodoList, setTodoLists, addTask } = todoList.actions;
 export default todoList.reducer;

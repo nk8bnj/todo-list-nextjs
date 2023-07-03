@@ -10,6 +10,5 @@ export interface ITodoList {
 }
 
 export interface ITodoListState {
-  todoListName: string;
   todoLists: ITodoList[];
 }
