@@ -18,14 +18,14 @@ export default function Header() {
     setInputValue(e.target.value);
   };
 
-  const buttonPressHandler = () => {
+  const addTodoButtonHandler = () => {
     dispatch(addTodoList({ id: uuidv4(), name: inputValue }));
     setInputValue("");
   };
 
   const enterPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      buttonPressHandler();
+      addTodoButtonHandler();
       inputRef.current?.blur();
     }
   };
@@ -52,7 +52,7 @@ export default function Header() {
             onKeyPress={enterPressHandler}
           />
           <button
-            onClick={buttonPressHandler}
+            onClick={addTodoButtonHandler}
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded"
           >
             Add
