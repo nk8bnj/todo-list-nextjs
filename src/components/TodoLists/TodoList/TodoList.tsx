@@ -1,9 +1,17 @@
 import { useState, ChangeEvent, KeyboardEvent, useRef } from "react";
-import { BsFillPlusSquareFill, BsTrash3Fill } from "react-icons/bs";
+import {
+  BsFillPlusSquareFill,
+  BsTrash3Fill,
+  BsCheck2Square,
+} from "react-icons/bs";
 import { v4 as uuidv4 } from "uuid";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { addTask, setTodoLists } from "@/services/redux/features/todoListSlice";
+import {
+  addTask,
+  setTodoLists,
+  deleteTask,
+} from "@/services/redux/features/todoListSlice";
 import { ITodoList } from "@/services/type/todoList.interface";
 
 export default function TodoList(props: ITodoList) {
@@ -23,6 +31,11 @@ export default function TodoList(props: ITodoList) {
       addTask({ id: props.id, task: { id: uuidv4(), title: inputValue } })
     );
     setInputValue("");
+  };
+
+  const deleteTaskButtonHandler = (taskId: string) => {
+    dispatch(deleteTask({ id: props.id, taskId }));
+    console.log(props.tasks);
   };
 
   const deleteTodoListButtonHandler = (todoId: string) => {
@@ -60,10 +73,21 @@ export default function TodoList(props: ITodoList) {
       </div>
       <div>
         {props.tasks.map((task) => (
-          <p>{task.title}</p>
+          <div key={task.id} className="flex items-center">
+            <button
+              className="text-red-500 hover:text-red-400 text-lg"
+              onClick={() => deleteTaskButtonHandler(task.id)}
+            >
+              <BsTrash3Fill />
+            </button>
+            <p className="p-1 inline-block text-lg">{task.title}</p>
+            <button className="text-green-500 hover:text-green-600 text-2xl">
+              <BsCheck2Square />
+            </button>
+          </div>
         ))}
       </div>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-4 mt-4">
         <div>
           <input type="radio" id="filter-all" name="filter" value="All" />
           <label htmlFor="filter-all" className="ml-2 mr-4">

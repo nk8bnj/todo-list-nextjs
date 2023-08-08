@@ -27,13 +27,22 @@ export const todoList = createSlice({
       state.todoLists = action.payload;
     },
     addTask(state, action: PayloadAction<{ id: string; task: ITask }>) {
-      const todo = state.todoLists.filter(
+      const selectedTodo = state.todoLists.find(
         (todo) => todo.id === action.payload.id
       );
-      todo[0].tasks.push(action.payload.task);
+      selectedTodo?.tasks.push(action.payload.task);
+    },
+    deleteTask(state, action: PayloadAction<{ id: string; taskId: string }>) {
+      const selectedTodo = state.todoLists.filter(
+        (todo) => todo.id === action.payload.id
+      );
+      selectedTodo[0].tasks = selectedTodo[0].tasks.filter(
+        (task) => task.id !== action.payload.taskId
+      );
     },
   },
 });
 
-export const { addTodoList, setTodoLists, addTask } = todoList.actions;
+export const { addTodoList, setTodoLists, addTask, deleteTask } =
+  todoList.actions;
 export default todoList.reducer;
