@@ -1,18 +1,11 @@
 import { useState, ChangeEvent, KeyboardEvent, useRef } from "react";
-import {
-  BsFillPlusSquareFill,
-  BsTrash3Fill,
-  BsCheck2Square,
-} from "react-icons/bs";
+import { BsFillPlusSquareFill, BsTrash3Fill } from "react-icons/bs";
 import { v4 as uuidv4 } from "uuid";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import {
-  addTask,
-  setTodoLists,
-  deleteTask,
-} from "@/services/redux/features/todoListSlice";
+import { addTask, setTodoLists } from "@/services/redux/features/todoListSlice";
 import { ITodoList } from "@/services/type/todoList.interface";
+import Task from "./Task/Task";
 
 export default function TodoList(props: ITodoList) {
   const [inputValue, setInputValue] = useState("");
@@ -28,20 +21,12 @@ export default function TodoList(props: ITodoList) {
 
   const addTaskButtonHandler = () => {
     dispatch(
-      addTask({ id: props.id, task: { id: uuidv4(), title: inputValue } })
+      addTask({
+        id: props.id,
+        task: { id: uuidv4(), title: inputValue, isDone: false },
+      })
     );
     setInputValue("");
-  };
-
-  const deleteTaskButtonHandler = (taskId: string) => {
-    dispatch(deleteTask({ id: props.id, taskId }));
-    console.log(props.tasks);
-  };
-
-  const deleteTodoListButtonHandler = (todoId: string) => {
-    dispatch(
-      setTodoLists(allTodolists.filter((item: ITodoList) => item.id !== todoId))
-    );
   };
 
   const enterPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -49,6 +34,12 @@ export default function TodoList(props: ITodoList) {
       addTaskButtonHandler();
       inputRef.current?.blur();
     }
+  };
+
+  const deleteTodoListButtonHandler = (todoId: string) => {
+    dispatch(
+      setTodoLists(allTodolists.filter((item: ITodoList) => item.id !== todoId))
+    );
   };
 
   return (
@@ -72,20 +63,16 @@ export default function TodoList(props: ITodoList) {
         </button>
       </div>
       <div>
-        {props.tasks.map((task) => (
-          <div key={task.id} className="flex items-center">
-            <button
-              className="text-red-500 hover:text-red-400 text-lg"
-              onClick={() => deleteTaskButtonHandler(task.id)}
-            >
-              <BsTrash3Fill />
-            </button>
-            <p className="p-1 inline-block text-lg">{task.title}</p>
-            <button className="text-green-500 hover:text-green-600 text-2xl">
-              <BsCheck2Square />
-            </button>
-          </div>
-        ))}
+        {props.tasks.map((task) => {
+          return (
+            <Task
+              key={task.id}
+              taskId={task.id}
+              taskTitle={task.title}
+              todoId={props.id}
+            />
+          );
+        })}
       </div>
       <div className="flex justify-between items-center mb-4 mt-4">
         <div>

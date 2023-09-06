@@ -5,6 +5,10 @@ import {
   ITodoList,
 } from "@/services/type/todoList.interface";
 
+const selectedTodo = (id: string, todoLists: ITodoList[]) => {
+  return todoLists.filter((todo) => todo.id === id);
+};
+
 const initialState: ITodoListState = {
   todoLists: [],
 };
@@ -27,22 +31,31 @@ export const todoList = createSlice({
       state.todoLists = action.payload;
     },
     addTask(state, action: PayloadAction<{ id: string; task: ITask }>) {
-      const selectedTodo = state.todoLists.find(
-        (todo) => todo.id === action.payload.id
-      );
-      selectedTodo?.tasks.push(action.payload.task);
+      const todo = selectedTodo(action.payload.id, state.todoLists);
+      todo[0].tasks.push(action.payload.task);
     },
-    deleteTask(state, action: PayloadAction<{ id: string; taskId: string }>) {
-      const selectedTodo = state.todoLists.filter(
-        (todo) => todo.id === action.payload.id
+    deleteTask(
+      state,
+      action: PayloadAction<{ id: string; selectedTaskId: string }>
+    ) {
+      const todo = selectedTodo(action.payload.id, state.todoLists);
+      todo[0].tasks = todo[0].tasks.filter(
+        (task) => task.id !== action.payload.selectedTaskId
       );
-      selectedTodo[0].tasks = selectedTodo[0].tasks.filter(
-        (task) => task.id !== action.payload.taskId
+    },
+    changeIsDone(
+      state,
+      action: PayloadAction<{ id: string; selectedTaskId: string }>
+    ) {
+      const todo = selectedTodo(action.payload.id, state.todoLists);
+      const task = todo[0].tasks.filter(
+        (task) => task.id === action.payload.selectedTaskId
       );
+      task[0].isDone = !task[0].isDone;
     },
   },
 });
 
-export const { addTodoList, setTodoLists, addTask, deleteTask } =
+export const { addTodoList, setTodoLists, addTask, deleteTask, changeIsDone } =
   todoList.actions;
 export default todoList.reducer;
