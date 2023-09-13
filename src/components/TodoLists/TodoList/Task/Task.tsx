@@ -1,6 +1,6 @@
 import { BsTrash3Fill, BsCheck2Square } from "react-icons/bs";
 
-import { useAppDispatch } from "@/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import {
   deleteTask,
   changeIsDone,
@@ -10,6 +10,7 @@ interface ITaskProps {
   taskId: string;
   taskTitle: string;
   todoId: string;
+  isDone: boolean;
 }
 
 export default function Task(props: ITaskProps) {
@@ -23,17 +24,40 @@ export default function Task(props: ITaskProps) {
     dispatch(deleteTask({ id: props.todoId, selectedTaskId }));
   };
 
+  const customStyle = () => {
+    return props.isDone
+      ? "line-through text-gray-400 p-1 inline-block text-lg"
+      : "p-1 inline-block text-lg";
+  };
+
   return (
     <div key={props.taskId} className="flex items-center">
       <button
-        className="text-red-500 hover:text-red-400 text-lg"
+        disabled={props.isDone}
+        className={
+          props.isDone
+            ? "text-gray-400 hover:text-gray-500 text-lg"
+            : "text-red-500 hover:text-red-400 text-lg"
+        }
         onClick={() => deleteTaskButtonHandler(props.taskId)}
       >
         <BsTrash3Fill />
       </button>
-      <p className="p-1 inline-block text-lg">{props.taskTitle}</p>
+      <p
+        className={
+          props.isDone
+            ? "line-through text-gray-400 p-1 inline-block text-lg"
+            : "p-1 inline-block text-lg"
+        }
+      >
+        {props.taskTitle}
+      </p>
       <button
-        className="text-green-500 hover:text-green-600 text-2xl"
+        className={
+          props.isDone
+            ? "text-gray-400 hover:text-gray-500 text-2xl"
+            : "text-green-500 hover:text-green-600 text-2xl"
+        }
         onClick={() => completeTaskButtonHandler(props.taskId)}
       >
         <BsCheck2Square />

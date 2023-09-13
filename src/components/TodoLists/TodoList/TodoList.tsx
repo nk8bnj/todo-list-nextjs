@@ -24,7 +24,7 @@ export default function TodoList(props: ITodoList) {
       addTask({
         id: props.id,
         task: { id: uuidv4(), title: inputValue, isDone: false },
-      })
+      }),
     );
     setInputValue("");
   };
@@ -38,7 +38,9 @@ export default function TodoList(props: ITodoList) {
 
   const deleteTodoListButtonHandler = (todoId: string) => {
     dispatch(
-      setTodoLists(allTodolists.filter((item: ITodoList) => item.id !== todoId))
+      setTodoLists(
+        allTodolists.filter((item: ITodoList) => item.id !== todoId),
+      ),
     );
   };
 
@@ -53,7 +55,7 @@ export default function TodoList(props: ITodoList) {
           placeholder="Enter a task"
           onChange={inputValueHandler}
           value={inputValue}
-          onKeyPress={enterPressHandler}
+          onKeyDown={enterPressHandler}
         />
         <button
           onClick={addTaskButtonHandler}
@@ -70,6 +72,7 @@ export default function TodoList(props: ITodoList) {
               taskId={task.id}
               taskTitle={task.title}
               todoId={props.id}
+              isDone={task.isDone}
             />
           );
         })}
