@@ -64,7 +64,7 @@ export default function TodoList(props: ITodoList) {
   };
 
   return (
-    <div className="p-4 border border-greay-50 rounded-md">
+    <div className="relative p-4 border border-greay-50 rounded-md">
       <h2 className="text-2xl font-bold mb-4">{props.name}</h2>
       <div className="flex mb-4">
         <input
@@ -83,7 +83,7 @@ export default function TodoList(props: ITodoList) {
           <BsFillPlusSquareFill />
         </button>
       </div>
-      <div>
+      <div className="mb-10">
         {filterTasks().map((task: ITask) => {
           return (
             <Task
@@ -96,7 +96,7 @@ export default function TodoList(props: ITodoList) {
           );
         })}
       </div>
-      <div className="flex justify-between items-center mb-4 mt-4">
+      <div className="w-11/12 absolute bottom-0 flex justify-between items-center mb-4 mt-4">
         <div>
           <input
             onClick={() => filterHandler("All")}

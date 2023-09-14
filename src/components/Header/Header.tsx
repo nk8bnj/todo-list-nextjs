@@ -19,7 +19,7 @@ export default function Header() {
   };
 
   const addTodoButtonHandler = () => {
-    dispatch(addTodoList({ id: uuidv4(), name: inputValue }));
+    dispatch(addTodoList({ id: uuidv4(), name: inputValue, tasks: [] }));
     setInputValue("");
   };
 
@@ -31,7 +31,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-red-500 h-16 flex items-center justify-center max-sm:h-24 sticky top-0 opacity-95">
+    <header className="z-10 bg-red-500 h-16 flex items-center justify-center max-sm:h-24 sticky top-0 opacity-95">
       <div className="container mx-auto flex max-sm:flex-col items-center justify-between px-4">
         <div className="flex space-x-4 max-sm:m-3">
           <Link href="/" className="text-white hover:text-gray-200">
