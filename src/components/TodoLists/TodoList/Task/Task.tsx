@@ -1,6 +1,6 @@
 import { BsTrash3Fill, BsCheck2Square } from "react-icons/bs";
 
-import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { useAppDispatch } from "@/hooks/hooks";
 import {
   deleteTask,
   changeIsDone,
@@ -22,12 +22,6 @@ export default function Task(props: ITaskProps) {
 
   const deleteTaskButtonHandler = (selectedTaskId: string) => {
     dispatch(deleteTask({ id: props.todoId, selectedTaskId }));
-  };
-
-  const customStyle = () => {
-    return props.isDone
-      ? "line-through text-gray-400 p-1 inline-block text-lg"
-      : "p-1 inline-block text-lg";
   };
 
   return (

@@ -4,16 +4,31 @@ import { v4 as uuidv4 } from "uuid";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { addTask, setTodoLists } from "@/services/redux/features/todoListSlice";
-import { ITodoList } from "@/services/type/todoList.interface";
+import { ITask, ITodoList, TFilter } from "@/services/type/todoList.interface";
 import Task from "./Task/Task";
 
 export default function TodoList(props: ITodoList) {
-  const [inputValue, setInputValue] = useState("");
-  const allTodolists = useAppSelector((state) => state.todoListSlice.todoLists);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [filterValue, setGetFilterValue] = useState<TFilter>("All");
 
   const dispatch = useAppDispatch();
 
+  const allTodolists = useAppSelector((state) => state.todoListSlice.todoLists);
+
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const filterTasks = () => {
+    return props.tasks.filter((task) => {
+      switch (filterValue) {
+        case "Active":
+          return !task.isDone;
+        case "Completed":
+          return task.isDone;
+        default:
+          return true;
+      }
+    });
+  };
 
   const inputValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -44,6 +59,10 @@ export default function TodoList(props: ITodoList) {
     );
   };
 
+  const filterHandler = (filter: TFilter) => {
+    setGetFilterValue(filter);
+  };
+
   return (
     <div className="p-4 border border-greay-50 rounded-md">
       <h2 className="text-2xl font-bold mb-4">{props.name}</h2>
@@ -65,7 +84,7 @@ export default function TodoList(props: ITodoList) {
         </button>
       </div>
       <div>
-        {props.tasks.map((task) => {
+        {filterTasks().map((task: ITask) => {
           return (
             <Task
               key={task.id}
@@ -79,15 +98,29 @@ export default function TodoList(props: ITodoList) {
       </div>
       <div className="flex justify-between items-center mb-4 mt-4">
         <div>
-          <input type="radio" id="filter-all" name="filter" value="All" />
+          <input
+            onClick={() => filterHandler("All")}
+            defaultChecked={true}
+            type="radio"
+            id="filter-all"
+            name="filter"
+            value="All"
+          />
           <label htmlFor="filter-all" className="ml-2 mr-4">
             All
           </label>
-          <input type="radio" id="filter-active" name="filter" value="Active" />
+          <input
+            onClick={() => filterHandler("Active")}
+            type="radio"
+            id="filter-active"
+            name="filter"
+            value="Active"
+          />
           <label htmlFor="filter-done" className="ml-2 mr-4">
             Active
           </label>
           <input
+            onClick={() => filterHandler("Completed")}
             type="radio"
             id="filter-completed"
             name="filter"

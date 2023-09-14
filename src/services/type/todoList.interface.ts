@@ -13,3 +13,5 @@ export interface ITodoList {
 export interface ITodoListState {
   todoLists: ITodoList[];
 }
+
+export type TFilter = "All" | "Active" | "Completed";
