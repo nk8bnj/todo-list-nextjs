@@ -1,17 +1,17 @@
 export interface ITask {
-  id: string;
-  title: string;
-  isDone: boolean;
+  id: string
+  title: string
+  isDone: boolean
 }
 
 export interface ITodoList {
-  id: string;
-  name: string;
-  tasks: ITask[];
+  id: string
+  name: string
+  tasks: ITask[]
 }
 
 export interface ITodoListState {
-  todoLists: ITodoList[];
+  todoLists: ITodoList[]
 }
 
-export type TFilter = "All" | "Active" | "Completed";
+export type TFilter = 'All' | 'Active' | 'Completed'

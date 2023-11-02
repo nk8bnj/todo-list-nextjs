@@ -9,7 +9,7 @@ const selectedTodo = (id: string, todoLists: ITodoList[]) => {
   return todoLists.filter((todo) => todo.id === id);
 };
 
-const initialState: any = {
+const initialState: ITodoListState = {
   todoLists: [],
 };
 
