@@ -1,14 +1,12 @@
 {
   "name": "todo-list-nextjs",
-  "homepage": "https://nk8bnj.github.io/todo-list-nextjs/",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "deploy": "gh-pages -d build"
+    "lint": "next lint"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
