@@ -1,6 +1,4 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  // basePath: '/github-pages',
+module.exports = {
+  basePath: '',
+  distDir: 'build',
 }
-
-module.exports = {target: 'experimental-serverless-trace'}
